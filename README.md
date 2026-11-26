@@ -1,72 +1,128 @@
 # Boyne Theme Switcher POC
 
-Next.js (App Router, TypeScript, Tailwind v4) proof of concept for a brand/theme
-switching system driven by JSON design tokens.
+A proof of concept for switching the look of the site between brands and themes.
+The colors, fonts, spacing and corner shapes all come from simple JSON files, so
+changing a brand is a data change, not a code change.
 
-## Concept
+Built with Next.js (App Router, TypeScript, Tailwind CSS v4).
 
-Two independent environment variables select two independent token sets, which are
-merged into one generated CSS file:
+## How it works
 
-- `NEXT_BOYNE_BRAND` → `tokens/brands/<brand>.json` — colors and typography.
-- `NEXT_BOYNE_THEME` → `tokens/themes/<theme>.json` — spacing and border radii.
+Think of the look of the site as two layers that you can mix and match:
 
-`scripts/build-theme.mjs` reads both JSON files and writes
-`src/styles/generated/theme.css` (gitignored, regenerated on demand), which defines
-raw `--boyne-*` CSS variables plus a Tailwind v4 `@theme inline` block that maps them
-onto standard Tailwind namespaces (`--color-*`, `--font-*`, `--spacing-*`,
-`--radius-*`). That means brand/theme tokens become ordinary Tailwind utilities, e.g.
-`bg-primary`, `font-heading`, `rounded-sm`.
+- **Brand** controls colors and typography (fonts and text sizes).
+  These live in `tokens/brands/`.
+- **Theme** controls spacing and corner shapes (how roomy and rounded things feel).
+  These live in `tokens/themes/`.
 
-The generation step runs:
-- **ahead of time** before `next build` / `storybook build` (via `prebuild` /
-  `prebuild-storybook` npm lifecycle hooks), and
-- **at dev-server startup** before `next dev` / `storybook dev` (via `predev` /
-  `prestorybook`).
+Each brand and theme is one JSON file. The build reads one brand and one theme,
+then writes a single stylesheet that the site uses. Tailwind then turns those
+values into ordinary class names, so a developer can write things like `bg-primary`,
+`font-heading` or `rounded-sm` and the right value for the active brand and theme
+is applied.
 
-No tokens exist yet beyond two placeholder brands (`boyne-mountain`, `big-sky`) and
-two placeholder themes (`default`, `compact`) used to prove the pipeline works.
+### Choosing a brand and theme for the app
+
+Two environment variables pick the brand and theme for the Next.js app:
+
+- `NEXT_BOYNE_BRAND`, for example `boyne-resorts`
+- `NEXT_BOYNE_THEME`, for example `compact`
+
+Copy `.env.example` to `.env` to set your own values. If either variable is missing,
+the build falls back to `boyne-mountain` and `default` and prints a warning in the
+terminal.
+
+### Generated stylesheets
+
+Generated files are never edited by hand. They are rebuilt automatically:
+
+- **Next.js app:** `src/styles/generated/theme.css`, built from the brand and theme
+  you selected. It is rebuilt before `npm run dev` and `npm run build`.
+- **Storybook:** `src/styles/generated/theme.storybook.css`, built from every brand
+  and every theme at once. It is rebuilt before `npm run storybook` and
+  `npm run build-storybook`.
+
+Both generated files are ignored by Git, so they are always created fresh on
+your machine.
+
+## Using Storybook to preview brands and themes
+
+Storybook lets you see any component in any brand and theme without restarting
+anything.
+
+1. Run `npm run storybook`.
+2. Use the **Brand** and **Theme** dropdowns in the Storybook toolbar.
+3. The page updates immediately, so you can compare brands side by side in your
+   browser.
+
+This works because the Storybook stylesheet includes every brand and theme, and the
+toolbar switches between them by changing an attribute on the page. The Next.js app
+does not use this and is not affected.
+
+When you add a new brand or theme JSON file, it is picked up automatically the next
+time Storybook builds. You also need to add its name to the lists at the top of
+`.storybook/preview.tsx` so it shows up in the toolbar.
+
+## Getting started
+
+Install the dependencies, then start the app or Storybook:
+
+```bash
+npm install
+npm run dev          # the Next.js app
+npm run storybook    # the component library in Storybook
+```
 
 ## Scripts
 
 ```bash
-npm run dev               # regenerate theme CSS, then start Next.js dev server
-npm run build             # regenerate theme CSS, then build for production
-npm run build-theme       # regenerate theme CSS only
-npm run test              # run unit tests (Vitest)
-npm run test:watch        # run unit tests in watch mode
-npm run storybook         # regenerate theme CSS, then start Storybook
-npm run build-storybook   # regenerate theme CSS, then build static Storybook
+npm run dev               # build the app theme, then start the Next.js dev server
+npm run build             # build the app theme, then create a production build
+npm run start             # run the production build
+npm run build-theme       # rebuild only the app theme stylesheet
+npm run storybook         # build the Storybook theme, then start Storybook
+npm run build-storybook   # build the Storybook theme, then create a static Storybook
+npm run build-theme-storybook  # rebuild only the Storybook theme stylesheet
+npm run test              # run the unit tests once
+npm run test:watch        # run the unit tests and re-run them when files change
+npm run lint              # check the code for problems
 ```
 
-Select a brand/theme via env vars, e.g.:
+Example of choosing a brand and theme for a single run:
 
 ```bash
 NEXT_BOYNE_BRAND=big-sky NEXT_BOYNE_THEME=compact npm run dev
 ```
 
-If unset, both default to `boyne-mountain` / `default` with a console warning.
-
-## Structure
+## Folder guide
 
 ```
 tokens/
-  brands/<brand>.json     # colors + typography tokens
-  themes/<theme>.json     # spacing + radii tokens
+  brands/<brand>.json        # colors and typography for each brand
+  themes/<theme>.json        # spacing and corner shapes for each theme
+  raw-figma-export.json      # the original design export, kept for reference
 scripts/
-  build-theme.mjs         # CLI entry: resolves env vars, writes generated CSS
-  lib/
-    load-tokens.mjs        # reads/parses token JSON
-    generate-theme-css.mjs # pure function: tokens -> CSS string (unit tested)
+  build-theme.mjs            # builds the app stylesheet from the chosen brand and theme
+  build-theme-storybook.mjs  # builds the Storybook stylesheet from all brands and themes
+  lib/                       # shared helpers that read tokens and write the CSS
 src/
-  styles/generated/theme.css  # generated output (gitignored)
-  components/[Component].tsx + .stories.tsx
-  app/
+  app/                       # the Next.js pages and global styles
+  components/                # reusable UI pieces, each with its own Storybook stories
+  styles/
+    base.css                 # shared base styles for the app and Storybook
+    generated/               # generated stylesheets (not stored in Git)
+.storybook/                  # Storybook settings, including the brand and theme toolbar
+test/                        # automated tests
 ```
 
-## Status
+## Current status
 
-This is a skeleton: the app, build pipeline, test setup, and Storybook are wired up
-and verified end-to-end against placeholder tokens. Real brand/theme token values are
-still to come — dropping real JSON into `tokens/brands/` and `tokens/themes/` is the
-only change needed once they're available.
+- The app, the build process, the tests and Storybook are all working.
+- Boyne Resorts and Gatlinburg have real brand token files.
+- `boyne-mountain` and `big-sky` are still placeholders.
+- The two themes, `default` and `compact`, are working examples. Final values
+  are still to come.
+
+To bring in final values, update the JSON files in `tokens/brands/` and
+`tokens/themes/`. No code changes are needed for that. If you add a new brand or
+theme, also add its name to `.storybook/preview.tsx` so it appears in the toolbar.
