@@ -402,9 +402,9 @@
     "fontFormLabel": "\"DIN 2014\", sans-serif"
   },
   "fontWeight": {
-    "display": "700",
-    "heading": "700",
-    "subheading": "700",
+    "display": "400",
+    "heading": "400",
+    "subheading": "400",
     "body": "400",
     "caption": "400",
     "link": "700",
