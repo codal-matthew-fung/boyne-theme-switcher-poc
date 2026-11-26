@@ -73,7 +73,7 @@ export const AllVariants: Story = {
   render: () => (
     <div className="flex flex-col gap-sm">
       {VARIANTS.map((variant) => (
-        <Text key={variant} variant={variant} className="text-foreground">
+        <Text key={variant} variant={variant} className="text-primary">
           {variant} — The quick brown fox jumps over the lazy dog
         </Text>
       ))}

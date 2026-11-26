@@ -7,8 +7,8 @@
 }
 
 body {
-  background: var(--color-background);
-  color: var(--color-foreground);
+  background: var(--color-default-surface-main);
+  color: var(--color-primary);
   font-family: var(--font-body), Arial, Helvetica, sans-serif;
 }
 

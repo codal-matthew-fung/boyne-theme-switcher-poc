@@ -30,6 +30,10 @@ export const DefaultInverse: Story = {
   args: {
     type: "Default",
     color: "Inverse"
+  },
+  decorators: (story) => {
+    const Story = story;
+    return (<div className="w-full h-full bg-inverse-surface-subtle p-component-2xl"><Story/></div>)
   }
 }
 
@@ -44,5 +48,9 @@ export const SubtleInverse: Story = {
   args: {
     type: "Subtle",
     color: "Inverse"
+  },
+  decorators: (story) => {
+    const Story = story;
+    return (<div className="w-full h-full bg-inverse-surface-subtle p-component-2xl"><Story/></div>)
   }
 }
