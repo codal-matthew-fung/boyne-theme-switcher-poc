@@ -1,4 +1,4 @@
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 
 const TOKENS_ROOT = path.resolve(import.meta.dirname, "..", "..", "tokens");
@@ -21,10 +21,27 @@ async function readTokenFile(kind, name) {
   }
 }
 
+async function listTokenNames(kind) {
+  const dir = path.join(TOKENS_ROOT, kind);
+  const entries = await readdir(dir, { withFileTypes: true });
+  return entries
+    .filter((entry) => entry.isFile() && entry.name.endsWith(".json"))
+    .map((entry) => entry.name.replace(/\.json$/, ""))
+    .sort();
+}
+
 export function readBrandTokens(brand) {
   return readTokenFile("brands", brand);
 }
 
 export function readThemeTokens(theme) {
   return readTokenFile("themes", theme);
+}
+
+export function listBrandNames() {
+  return listTokenNames("brands");
+}
+
+export function listThemeNames() {
+  return listTokenNames("themes");
 }

@@ -1,0 +1,22 @@
+/**
+ * Shared base styles that depend only on the --color-* and --font-* tokens
+ * exposed by the active theme stylesheet (generated/theme.css for the
+ * Next.js app, generated/theme.storybook.css for Storybook) — not on which
+ * one is loaded. Imported by both src/app/globals.css and
+ * .storybook/storybook.css so Storybook's look stays in sync with the app's.
+ */
+
+body {
+  background: var(--color-default-surface-main);
+  color: var(--color-primary);
+  font-family: var(--font-body), Arial, Helvetica, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading), Arial, Helvetica, sans-serif;
+}

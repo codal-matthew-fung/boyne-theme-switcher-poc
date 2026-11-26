@@ -1,0 +1,10 @@
+/**
+ * Storybook-only stylesheet. Unlike src/app/globals.css (which imports the
+ * single env-driven generated/theme.css), this imports generated/theme.storybook.css,
+ * which bundles every brand x theme combination behind [data-brand]/[data-theme]
+ * attribute selectors so the toolbar in ./preview.tsx can switch instantly,
+ * with no rebuild and no effect on the Next.js app.
+ */
+@import "tailwindcss";
+@import "../src/styles/generated/theme.storybook.css";
+@import "../src/styles/base.css";

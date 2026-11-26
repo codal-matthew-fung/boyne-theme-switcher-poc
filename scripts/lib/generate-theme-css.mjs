@@ -107,6 +107,124 @@ function buildSafelist(variables) {
   return [...classes].sort();
 }
 
+function variableKey({ namespace, suffix }) {
+  return `${namespace}::${suffix}`;
+}
+
+/**
+ * Pure function: builds one Storybook-only stylesheet containing every
+ * brand x theme combination, each scoped under a `[data-brand][data-theme]`
+ * attribute selector instead of baked into `:root` at build time. This lets
+ * Storybook switch brand/theme at runtime (a toolbar writing those
+ * attributes onto `<html>`) with no rebuild, while the Next.js app keeps
+ * using `generateThemeCss` with one brand/theme chosen via env vars.
+ *
+ * Every combination block declares the FULL union of variable names across
+ * all brands/themes (not just the ones that brand/theme defines), falling
+ * back to the first combo that defines a given variable when the active
+ * brand/theme doesn't. Without this, switching from a fully-tokenized brand
+ * (e.g. boyne-resorts) to a smaller placeholder brand (e.g. big-sky, which
+ * only defines a handful of color keys) would leave the previous brand's
+ * values for undefined keys still in effect (stale CSS custom properties
+ * aren't reset by the cascade unless something overrides them).
+ */
+export function generateStorybookThemeCss({ brands, themes, defaultBrand, defaultTheme }) {
+  const orderedBrands = [
+    ...brands.filter((b) => b.name === defaultBrand),
+    ...brands.filter((b) => b.name !== defaultBrand),
+  ];
+  const orderedThemes = [
+    ...themes.filter((t) => t.name === defaultTheme),
+    ...themes.filter((t) => t.name !== defaultTheme),
+  ];
+
+  // variables per combo, plus a fallback value for every variable key seen
+  // anywhere, resolved in (default brand/theme first) order so the default
+  // combo's own values win ties.
+  const comboVariables = new Map(); // `${brand}::${theme}` -> variables[]
+  const fallbackValues = new Map(); // variableKey -> value
+
+  for (const { name: brand, tokens: brandTokens } of orderedBrands) {
+    for (const { name: theme, tokens: themeTokens } of orderedThemes) {
+      const variables = collectVariables(brandTokens, themeTokens);
+      comboVariables.set(`${brand}::${theme}`, variables);
+      for (const variable of variables) {
+        const key = variableKey(variable);
+        if (!fallbackValues.has(key)) fallbackValues.set(key, variable.value);
+      }
+    }
+  }
+
+  const unionVariables = [...fallbackValues.keys()].sort().map((key) => {
+    const [namespace, suffix] = key.split("::");
+    return { namespace, suffix };
+  });
+
+  const themeDeclarations = unionVariables
+    .map(
+      ({ namespace, suffix }) =>
+        `  --${namespace}-${suffix}: var(--${PREFIX}-${namespace}-${suffix});`
+    )
+    .join("\n");
+
+  const safelist = buildSafelist(unionVariables);
+
+  const comboBlocks = orderedBrands
+    .flatMap(({ name: brand }) =>
+      orderedThemes.map(({ name: theme }) => {
+        const own = new Map(
+          comboVariables.get(`${brand}::${theme}`).map((v) => [variableKey(v), v.value])
+        );
+        const declarations = unionVariables
+          .map(({ namespace, suffix }) => {
+            const key = `${namespace}::${suffix}`;
+            const value = own.get(key) ?? fallbackValues.get(key);
+            return `  --${PREFIX}-${namespace}-${suffix}: ${value};`;
+          })
+          .join("\n");
+        return `[data-brand="${brand}"][data-theme="${theme}"] {\n${declarations}\n}`;
+      })
+    )
+    .join("\n\n");
+
+  const defaultDeclarations = unionVariables
+    .map(({ namespace, suffix }) => {
+      const key = `${namespace}::${suffix}`;
+      return `  --${PREFIX}-${namespace}-${suffix}: ${fallbackValues.get(key)};`;
+    })
+    .join("\n");
+
+  return `/**
+ * GENERATED FILE - do not edit by hand.
+ * Produced by scripts/build-theme-storybook.mjs for Storybook ONLY.
+ * The Next.js app does not use this file; it keeps using theme.css, built
+ * from a single brand/theme chosen via NEXT_BOYNE_BRAND/NEXT_BOYNE_THEME.
+ *
+ * Contains every brand x theme combination (brands: ${orderedBrands.map((b) => b.name).join(", ")};
+ * themes: ${orderedThemes.map((t) => t.name).join(", ")}), each scoped under a
+ * [data-brand][data-theme] selector so Storybook's toolbar can switch
+ * brand/theme at runtime by setting those attributes on <html>.
+ */
+
+:root {
+${defaultDeclarations}
+}
+
+@theme inline {
+${themeDeclarations}
+}
+
+${comboBlocks}
+
+/**
+ * Safelists every utility class any brand/theme's tokens can produce (union
+ * across all combos), so a class name works regardless of which combo is
+ * active — see generateThemeCss's equivalent comment for why this is needed.
+ */
+@source inline("${safelist.join(" ")}");
+`;
+}
+
 /**
  * Pure function: merges brand + theme token objects into the generated CSS
  * module. Brand decides colors/typography; theme decides spacing/radii; both

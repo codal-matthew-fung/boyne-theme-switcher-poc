@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build-theme": "node scripts/build-theme.mjs",
+    "build-theme-storybook": "node scripts/build-theme-storybook.mjs",
     "predev": "npm run build-theme",
     "dev": "next dev",
     "prebuild": "npm run build-theme",
@@ -12,9 +13,9 @@
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest",
-    "prestorybook": "npm run build-theme",
+    "prestorybook": "npm run build-theme-storybook",
     "storybook": "storybook dev -p 6006",
-    "prebuild-storybook": "npm run build-theme",
+    "prebuild-storybook": "npm run build-theme-storybook",
     "build-storybook": "storybook build",
     "prepare": "husky"
   },
