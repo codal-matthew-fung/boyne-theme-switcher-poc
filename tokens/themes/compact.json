@@ -1,0 +1,72 @@
+{
+  "name": "Compact",
+  "spacing": {
+    "xs": "0.125rem",
+    "sm": "0.25rem",
+    "md": "0.5rem",
+    "lg": "0.75rem",
+    "xl": "1.25rem"
+  },
+  "radii": {
+    "sm": "0.125rem",
+    "md": "0.25rem",
+    "lg": "0.5rem",
+    "full": "9999px"
+  },
+  "typeScale": {
+    "display": {
+      "lg": { "fontSize": "80px", "lineHeight": "1.1", "letterSpacing": "0px" }
+    },
+    "heading": {
+      "h1": { "fontSize": "60px", "lineHeight": "1.15", "letterSpacing": "0px" },
+      "h2": { "fontSize": "48px", "lineHeight": "1.2", "letterSpacing": "0px" },
+      "h3": { "fontSize": "32px", "lineHeight": "1.25", "letterSpacing": "0px" },
+      "h4": { "fontSize": "28px", "lineHeight": "1.3", "letterSpacing": "0px" },
+      "h5": { "fontSize": "24px", "lineHeight": "1.35", "letterSpacing": "0px" },
+      "h6": { "fontSize": "20px", "lineHeight": "1.4", "letterSpacing": "0px" }
+    },
+    "subheading": {
+      "lg": { "fontSize": "20px", "lineHeight": "1.35", "letterSpacing": "0px" },
+      "md": { "fontSize": "16px", "lineHeight": "1.4", "letterSpacing": "0px" },
+      "sm": { "fontSize": "14px", "lineHeight": "1.45", "letterSpacing": "0px" }
+    },
+    "body": {
+      "lg": { "fontSize": "20px", "lineHeight": "1.45", "letterSpacing": "0px" },
+      "md": { "fontSize": "16px", "lineHeight": "1.5", "letterSpacing": "0px" },
+      "sm": { "fontSize": "14px", "lineHeight": "1.55", "letterSpacing": "0px" },
+      "xs": { "fontSize": "12px", "lineHeight": "1.6", "letterSpacing": "0px" }
+    },
+    "link": {
+      "lg": { "fontSize": "20px", "lineHeight": "1.45", "letterSpacing": "0px" },
+      "md": { "fontSize": "16px", "lineHeight": "1.5", "letterSpacing": "0px" },
+      "sm": { "fontSize": "14px", "lineHeight": "1.55", "letterSpacing": "0px" },
+      "xs": { "fontSize": "12px", "lineHeight": "1.6", "letterSpacing": "0px" }
+    },
+    "caption": {
+      "sm": { "fontSize": "12px", "lineHeight": "1.45", "letterSpacing": "0px" }
+    },
+    "button": {
+      "lg": { "fontSize": "16px", "lineHeight": "1.25", "letterSpacing": "0.5px" },
+      "md": { "fontSize": "14px", "lineHeight": "1.3", "letterSpacing": "0.5px" },
+      "sm": { "fontSize": "12px", "lineHeight": "1.35", "letterSpacing": "0.5px" },
+      "xs": { "fontSize": "10px", "lineHeight": "1.4", "letterSpacing": "0.5px" }
+    },
+    "navigation": {
+      "md": { "fontSize": "16px", "lineHeight": "1.4", "letterSpacing": "0px" },
+      "sm": { "fontSize": "14px", "lineHeight": "1.4", "letterSpacing": "0px" }
+    },
+    "badge": {
+      "lg": { "fontSize": "16px", "lineHeight": "1.25", "letterSpacing": "0px" },
+      "md": { "fontSize": "14px", "lineHeight": "1.3", "letterSpacing": "0px" },
+      "sm": { "fontSize": "12px", "lineHeight": "1.35", "letterSpacing": "0px" },
+      "xs": { "fontSize": "10px", "lineHeight": "1.4", "letterSpacing": "0px" }
+    },
+    "eyebrow": {
+      "lg": { "fontSize": "14px", "lineHeight": "1.25", "letterSpacing": "1px" },
+      "md": { "fontSize": "12px", "lineHeight": "1.25", "letterSpacing": "1px" }
+    },
+    "form-label": {
+      "sm": { "fontSize": "14px", "lineHeight": "1.4", "letterSpacing": "0px" }
+    }
+  }
+}

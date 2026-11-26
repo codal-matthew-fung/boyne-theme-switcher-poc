@@ -1,0 +1,99 @@
+{
+  "name": "Default",
+  "spacing": {
+    "component-2xs": "2px",
+    "component-xs": "6px",
+    "component-sm": "10px",
+    "component-md": "14px",
+    "component-lg": "18px",
+    "component-xl": "24px",
+    "component-2xl": "32px",
+    "component-3xl": "48px",
+    "component-4xl": "64px",
+    "container-none": "0px",
+    "container-2xs": "12px",
+    "container-xs": "16px",
+    "container-sm": "24px",
+    "container-md": "32px",
+    "container-lg": "48px",
+    "container-xl": "64px",
+    "container-2xl": "80px",
+    "container-3xl": "104px",
+    "container-4xl": "128px",
+    "margin-none": "0px",
+    "margin-sm": "48px",
+    "margin-lg": "104px",
+    "gap-sm": "24px",
+    "gap-lg": "80px",
+    "xs": "6px",
+    "sm": "10px",
+    "md": "14px",
+    "lg": "18px",
+    "xl": "24px"
+  },
+  "radii": {
+    "small": "6px",
+    "medium": "1px",
+    "button": "2px",
+    "input": "0px",
+    "checkbox": "2px",
+    "badge": "2px",
+    "pill": "999px"
+  },
+  "typeScale": {
+    "display": {
+      "lg": { "fontSize": "80px", "lineHeight": "1.1", "letterSpacing": "0px" }
+    },
+    "heading": {
+      "h1": { "fontSize": "60px", "lineHeight": "1.15", "letterSpacing": "0px" },
+      "h2": { "fontSize": "48px", "lineHeight": "1.2", "letterSpacing": "0px" },
+      "h3": { "fontSize": "32px", "lineHeight": "1.25", "letterSpacing": "0px" },
+      "h4": { "fontSize": "28px", "lineHeight": "1.3", "letterSpacing": "0px" },
+      "h5": { "fontSize": "24px", "lineHeight": "1.35", "letterSpacing": "0px" },
+      "h6": { "fontSize": "20px", "lineHeight": "1.4", "letterSpacing": "0px" }
+    },
+    "subheading": {
+      "lg": { "fontSize": "20px", "lineHeight": "1.35", "letterSpacing": "0px" },
+      "md": { "fontSize": "16px", "lineHeight": "1.4", "letterSpacing": "0px" },
+      "sm": { "fontSize": "14px", "lineHeight": "1.45", "letterSpacing": "0px" }
+    },
+    "body": {
+      "lg": { "fontSize": "20px", "lineHeight": "1.45", "letterSpacing": "0px" },
+      "md": { "fontSize": "16px", "lineHeight": "1.5", "letterSpacing": "0px" },
+      "sm": { "fontSize": "14px", "lineHeight": "1.55", "letterSpacing": "0px" },
+      "xs": { "fontSize": "12px", "lineHeight": "1.6", "letterSpacing": "0px" }
+    },
+    "link": {
+      "lg": { "fontSize": "20px", "lineHeight": "1.45", "letterSpacing": "0px" },
+      "md": { "fontSize": "16px", "lineHeight": "1.5", "letterSpacing": "0px" },
+      "sm": { "fontSize": "14px", "lineHeight": "1.55", "letterSpacing": "0px" },
+      "xs": { "fontSize": "12px", "lineHeight": "1.6", "letterSpacing": "0px" }
+    },
+    "caption": {
+      "sm": { "fontSize": "12px", "lineHeight": "1.45", "letterSpacing": "0px" }
+    },
+    "button": {
+      "lg": { "fontSize": "16px", "lineHeight": "1.25", "letterSpacing": "0.5px" },
+      "md": { "fontSize": "14px", "lineHeight": "1.3", "letterSpacing": "0.5px" },
+      "sm": { "fontSize": "12px", "lineHeight": "1.35", "letterSpacing": "0.5px" },
+      "xs": { "fontSize": "10px", "lineHeight": "1.4", "letterSpacing": "0.5px" }
+    },
+    "navigation": {
+      "md": { "fontSize": "16px", "lineHeight": "1.4", "letterSpacing": "0px" },
+      "sm": { "fontSize": "14px", "lineHeight": "1.4", "letterSpacing": "0px" }
+    },
+    "badge": {
+      "lg": { "fontSize": "16px", "lineHeight": "1.25", "letterSpacing": "0px" },
+      "md": { "fontSize": "14px", "lineHeight": "1.3", "letterSpacing": "0px" },
+      "sm": { "fontSize": "12px", "lineHeight": "1.35", "letterSpacing": "0px" },
+      "xs": { "fontSize": "10px", "lineHeight": "1.4", "letterSpacing": "0px" }
+    },
+    "eyebrow": {
+      "lg": { "fontSize": "14px", "lineHeight": "1.25", "letterSpacing": "1px" },
+      "md": { "fontSize": "12px", "lineHeight": "1.25", "letterSpacing": "1px" }
+    },
+    "form-label": {
+      "sm": { "fontSize": "14px", "lineHeight": "1.4", "letterSpacing": "0px" }
+    }
+  }
+}

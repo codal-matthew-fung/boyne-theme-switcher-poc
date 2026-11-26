@@ -1,0 +1,15 @@
+{
+  "name": "Boyne Mountain",
+  "colors": {
+    "primary": "#0B5394",
+    "secondary": "#F4A300",
+    "background": "#FFFFFF",
+    "foreground": "#141414",
+    "muted": "#6B7280",
+    "accent": "#1FA37A"
+  },
+  "typography": {
+    "fontHeading": "'Poppins', sans-serif",
+    "fontBody": "'Inter', sans-serif"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "name": "boyne-theme-switcher-poc",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build-theme": "node scripts/build-theme.mjs",
+    "predev": "npm run build-theme",
+    "dev": "next dev",
+    "prebuild": "npm run build-theme",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prestorybook": "npm run build-theme",
+    "storybook": "storybook dev -p 6006",
+    "prebuild-storybook": "npm run build-theme",
+    "build-storybook": "storybook build",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
+    ]
+  },
+  "dependencies": {
+    "dotenv": "^18.0.10",
+    "next": "16.4.6",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@chromatic-com/storybook": "latest",
+    "@storybook/addon-a11y": "^10.6.9",
+    "@storybook/addon-docs": "^10.6.9",
+    "@storybook/addon-mcp": "^10.6.9",
+    "@storybook/nextjs-vite": "^10.6.9",
+    "@tailwindcss/postcss": "^4.3.5",
+    "@tailwindcss/turbopack": "4.3.3",
+    "@testing-library/jest-dom": "^8.0.0",
+    "@testing-library/react": "^16.3.3",
+    "@types/node": "^24",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^6.3.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.6",
+    "eslint-plugin-storybook": "^10.6.9",
+    "husky": "^9.1.7",
+    "jsdom": "^31.0.1",
+    "lint-staged": "^17.6.2",
+    "storybook": "^10.6.9",
+    "tailwindcss": "4.3.3",
+    "typescript": "^5",
+    "vitest": "^5.1.2"
+  }
+}

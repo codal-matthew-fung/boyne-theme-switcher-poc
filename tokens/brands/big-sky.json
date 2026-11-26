@@ -1,0 +1,15 @@
+{
+  "name": "Big Sky",
+  "colors": {
+    "primary": "#13315C",
+    "secondary": "#E0A458",
+    "background": "#FBFBFB",
+    "foreground": "#1A1A1A",
+    "muted": "#737373",
+    "accent": "#B23A48"
+  },
+  "typography": {
+    "fontHeading": "'Merriweather', serif",
+    "fontBody": "'Source Sans 3', sans-serif"
+  }
+}
