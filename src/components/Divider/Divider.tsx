@@ -18,5 +18,5 @@ const ColorMap: Record<DividerType, Record<DividerColor, string>> = {
 };
 
 export const Divider = ({ type = "Default", color = "Default" }: DividerProps) => {
-  return (<hr className={`w-full max-w-full block border ${ColorMap[type][color]}`} />);
+  return (<hr className={`w-full max-w-full block h-px border ${ColorMap[type][color]}`} />);
 }
