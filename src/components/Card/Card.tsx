@@ -24,7 +24,7 @@ export const Card = (cardProps: CardProps) => {
   const Container = as == "span" ? "span" : "div";
   const isInverse = inverse;
   const cardColor = isInverse ? 'bg-inverse-surface-raised border-inverse-subtle/40' : 'bg-default-surface-raised border-border-subtle/40';
-  const textColor = isInverse ? 'text-inverse-primary' : 'text-button-neutral';
+  const textColor = isInverse ? 'text-inverse-primary' : 'text-default-primary';
   const hasPrimary = Boolean(buttonText?.trim());
   const hasSecondary = Boolean(buttonTextSecondary?.trim());
   return (

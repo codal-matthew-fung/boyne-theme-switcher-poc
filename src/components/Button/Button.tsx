@@ -1,14 +1,29 @@
+import Link from "next/link";
+import type { ButtonHTMLAttributes, ComponentProps } from "react";
+
 export type ButtonVariant = "solid" | "outline";
 export type ButtonColor = "primary" | "secondary" | "neutral" | "destructive";
 export type ButtonSize = "sm" | "md" | "lg";
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+type ButtonOwnProps = {
   variant?: ButtonVariant;
   color?: ButtonColor;
   inverse?: boolean;
   size?: ButtonSize;
   isLoading?: boolean;
-}
+};
+
+export type ButtonAsButton = ButtonOwnProps &
+  Omit<ButtonHTMLAttributes<HTMLButtonElement>, keyof ButtonOwnProps> & {
+    href?: undefined;
+  };
+
+type ButtonAsLink = ButtonOwnProps &
+  Omit<ComponentProps<typeof Link>, keyof ButtonOwnProps | "href"> & {
+    href: string;
+  };
+
+export type ButtonProps = ButtonAsButton | ButtonAsLink;
 
 type Tone = "Default" | "Inverse";
 
@@ -51,8 +66,10 @@ const OutlineMap: Record<ButtonColor, Record<Tone, string>> = {
 };
 
 const DisabledMap: Record<Tone, string> = {
-  Default: "disabled:bg-button-disabled disabled:text-default-surface-main",
-  Inverse: "disabled:bg-button-inverse-disabled disabled:text-inverse-subtle",
+  Default:
+    "disabled:bg-button-disabled disabled:text-default-surface-main aria-disabled:bg-button-disabled aria-disabled:text-default-surface-main",
+  Inverse:
+    "disabled:bg-button-inverse-disabled disabled:text-inverse-subtle aria-disabled:bg-button-inverse-disabled aria-disabled:text-inverse-subtle",
 };
 
 const SizeMap: Record<ButtonSize, string> = {
@@ -61,33 +78,63 @@ const SizeMap: Record<ButtonSize, string> = {
   lg: "h-component-4xl px-component-xl text-button-lg",
 };
 
-export function Button({
-  children,
-  variant = "solid",
-  color = "primary",
-  inverse = false,
-  size = "md",
-  isLoading = false,
-  disabled,
-  type = "button",
-  ...props
-}: ButtonProps) {
+export function Button(props: ButtonProps) {
+  const {
+    variant = "solid",
+    color = "primary",
+    inverse = false,
+    size = "md",
+    isLoading = false,
+    ...rest
+  } = props;
+
   const tone: Tone = inverse ? "Inverse" : "Default";
 
   const baseStyles =
-    "inline-flex items-center justify-center rounded-button font-medium tracking-[0.5px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none";
+    "inline-flex items-center justify-center rounded-button font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none aria-disabled:pointer-events-none";
 
   const variantStyles =
     variant === "outline"
       ? `border ${OutlineMap[color][tone]}`
       : `${SolidMap[color][tone]} ${DisabledMap[tone]}`;
 
+  const className = `${baseStyles} ${variantStyles} ${SizeMap[size]}`;
+
+  if (props.href !== undefined) {
+    const { href, children, onClick, target, rel, className: extraClass, ...linkProps } = rest as Omit<ButtonAsLink, keyof ButtonOwnProps>;
+    const isDisabled = isLoading;
+    const safeRel = target === "_blank" ? rel ?? "noopener noreferrer" : rel;
+
+    return (
+      <Link
+        {...linkProps}
+        href={href}
+        target={target}
+        rel={safeRel}
+        aria-disabled={isDisabled || undefined}
+        tabIndex={isDisabled ? -1 : linkProps.tabIndex}
+        onClick={(event) => {
+          if (isDisabled) {
+            event.preventDefault();
+            return;
+          }
+          onClick?.(event);
+        }}
+        className={`${className} ${extraClass ?? ""}`.trim()}
+      >
+        {isLoading ? "Loading..." : children}
+      </Link>
+    );
+  }
+
+  const { children, disabled, type = "button", className: extraClass, ...buttonProps } = rest as Omit<ButtonAsButton, keyof ButtonOwnProps>;
+
   return (
     <button
+      {...buttonProps}
       type={type}
-      disabled={disabled || isLoading}
-      className={`${baseStyles} ${variantStyles} ${SizeMap[size]}`}
-      {...props}
+      disabled={Boolean(disabled) || isLoading}
+      className={`${className} ${extraClass ?? ""}`.trim()}
     >
       {isLoading ? "Loading..." : children}
     </button>

@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Button, type ButtonProps } from "@/components/Button/Button";
+import { Button, type ButtonAsButton } from "@/components/Button/Button";
 
 const COLORS = ["primary", "secondary", "neutral", "destructive"] as const;
 
-const Stage = (props: ButtonProps) => {
+const Stage = (props: ButtonAsButton) => {
   return (
     <div className="grid grid-cols-2 gap-component-lg">
       <div className="bg-default-surface-subtle p-margin-lg flex flex-col gap-component-md items-start">
@@ -46,4 +46,22 @@ export const Solid: Story = {
 
 export const Outline: Story = {
   args: { variant: "outline", size: "md" },
+};
+
+// Same styles, rendered as a Next.js link when href is set.
+export const AsLink: Story = {
+  render: (args) => (
+    <div className="flex flex-col gap-component-md items-start bg-default-surface-subtle p-margin-lg">
+      <Button href="https://example.com" target="_blank" variant={args.variant} size={args.size}>
+        Visit site (new tab)
+      </Button>
+      <Button href="/tickets" variant={args.variant} size={args.size}>
+        Internal link
+      </Button>
+      <Button href="/tickets" variant={args.variant} size={args.size} isLoading>
+        Loading link
+      </Button>
+    </div>
+  ),
+  args: { variant: "solid", size: "md" },
 };
