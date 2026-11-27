@@ -1,0 +1,95 @@
+export type ButtonVariant = "solid" | "outline";
+export type ButtonColor = "primary" | "secondary" | "neutral" | "destructive";
+export type ButtonSize = "sm" | "md" | "lg";
+
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: ButtonVariant;
+  color?: ButtonColor;
+  inverse?: boolean;
+  size?: ButtonSize;
+  isLoading?: boolean;
+}
+
+type Tone = "Default" | "Inverse";
+
+const SolidMap: Record<ButtonColor, Record<Tone, string>> = {
+  primary: {
+    Default: "bg-button-primary text-default-surface-main hover:opacity-90",
+    Inverse: "bg-button-inverse-primary text-button-neutral hover:opacity-90",
+  },
+  secondary: {
+    Default: "bg-button-secondary text-button-neutral hover:opacity-90",
+    Inverse: "bg-button-inverse-secondary text-button-neutral hover:opacity-90",
+  },
+  neutral: {
+    Default: "bg-button-neutral text-default-surface-main hover:opacity-90",
+    Inverse: "bg-button-inverse-neutral text-button-neutral hover:opacity-90",
+  },
+  destructive: {
+    Default: "bg-button-destructive text-default-surface-main hover:opacity-90",
+    Inverse: "bg-button-inverse-destructive text-button-neutral hover:opacity-90",
+  },
+};
+
+const OutlineMap: Record<ButtonColor, Record<Tone, string>> = {
+  primary: {
+    Default: "border-button-primary text-button-primary hover:bg-default-surface-subtle",
+    Inverse: "border-button-inverse-primary text-inverse-primary hover:bg-inverse-surface-subtle",
+  },
+  secondary: {
+    Default: "border-button-secondary text-button-secondary hover:bg-default-surface-subtle",
+    Inverse: "border-button-inverse-secondary text-inverse-primary hover:bg-inverse-surface-subtle",
+  },
+  neutral: {
+    Default: "border-button-neutral text-button-neutral hover:bg-default-surface-subtle",
+    Inverse: "border-button-inverse-neutral text-inverse-primary hover:bg-inverse-surface-subtle",
+  },
+  destructive: {
+    Default: "border-button-destructive text-button-destructive hover:bg-default-surface-subtle",
+    Inverse: "border-button-inverse-destructive text-inverse-primary hover:bg-inverse-surface-subtle",
+  },
+};
+
+const DisabledMap: Record<Tone, string> = {
+  Default: "disabled:bg-button-disabled disabled:text-default-surface-main",
+  Inverse: "disabled:bg-button-inverse-disabled disabled:text-inverse-subtle",
+};
+
+const SizeMap: Record<ButtonSize, string> = {
+  sm: "h-component-2xl px-component-md text-button-sm",
+  md: "h-component-3xl px-component-lg text-button-md",
+  lg: "h-component-4xl px-component-xl text-button-lg",
+};
+
+export function Button({
+  children,
+  variant = "solid",
+  color = "primary",
+  inverse = false,
+  size = "md",
+  isLoading = false,
+  disabled,
+  type = "button",
+  ...props
+}: ButtonProps) {
+  const tone: Tone = inverse ? "Inverse" : "Default";
+
+  const baseStyles =
+    "inline-flex items-center justify-center rounded-button font-medium tracking-[0.5px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none";
+
+  const variantStyles =
+    variant === "outline"
+      ? `border ${OutlineMap[color][tone]}`
+      : `${SolidMap[color][tone]} ${DisabledMap[tone]}`;
+
+  return (
+    <button
+      type={type}
+      disabled={disabled || isLoading}
+      className={`${baseStyles} ${variantStyles} ${SizeMap[size]}`}
+      {...props}
+    >
+      {isLoading ? "Loading..." : children}
+    </button>
+  );
+}
