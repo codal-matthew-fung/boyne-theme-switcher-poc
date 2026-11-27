@@ -1,6 +1,7 @@
 import { ComponentPropsWithoutRef, ElementType } from "react"
 import { Text } from "@/components/Text";
 import { Divider } from "@/components/Divider/Divider";
+import { Button } from "@/components/Button/Button";
 
 type CardOwnProps<T extends ElementType> = {
   as?: T;
@@ -10,18 +11,22 @@ type CardOwnProps<T extends ElementType> = {
   ticketTier: string;
   price: number;
   inverse?: boolean;
+  buttonText: string;
+  buttonTextSecondary?: string;
 };
 
 export type CardProps<T extends ElementType = ElementType> = CardOwnProps<T> &
   Omit<ComponentPropsWithoutRef<T>, keyof CardOwnProps<T>>;
 
 export const Card = (cardProps: CardProps) => {
-  const { cardHeading, cardSubcopy, ticketTier, price, inverse, as } = cardProps;
+  const { cardHeading, cardSubcopy, ticketTier, price, inverse, as, buttonText, buttonTextSecondary } = cardProps;
   const Tag = as ?? "div";
   const Container = as == "span" ? "span" : "div";
   const isInverse = inverse;
   const cardColor = isInverse ? 'bg-inverse-surface-raised border-inverse-subtle/40' : 'bg-default-surface-raised border-border-subtle/40';
   const textColor = isInverse ? 'text-inverse-primary' : 'text-default-primary';
+  const hasPrimary = Boolean(buttonText?.trim());
+  const hasSecondary = Boolean(buttonTextSecondary?.trim());
   return (
     <Tag className={`${cardColor} border grid grid-rows-2 grid-cols-1 max-w-80`}>
       <Container className="relative">
@@ -39,8 +44,12 @@ export const Card = (cardProps: CardProps) => {
           <Text variant="heading-h6" as="p" className={textColor}>From ${price}</Text>
         </Container>
         <Container className="flex justify-center items-start gap-2.5">
-          {/* Button */}
-          {/* Button */}
+          {hasSecondary && (
+            <Button variant="outline" color="primary" inverse={isInverse} size="lg">{buttonTextSecondary}</Button>
+          )}
+          {hasPrimary && (
+            <Button variant="solid" color="primary" inverse={isInverse} size="lg">{buttonText}</Button>
+          )}
         </Container>
       </Container>
     </Tag>
