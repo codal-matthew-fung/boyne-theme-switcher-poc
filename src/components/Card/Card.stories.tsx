@@ -45,6 +45,8 @@ export const Default: Story = {
     cardHeading: "Family Adventure Bundle",
     cardSubcopy: "The SkyPark Family Bundle - full adult admission plus 20% off junior tickets.",
     ticketTier: "Adult",
-    price: 48
+    price: 48,
+    buttonText: "Book now",
+    buttonTextSecondary: "Learn more"
   }
 }

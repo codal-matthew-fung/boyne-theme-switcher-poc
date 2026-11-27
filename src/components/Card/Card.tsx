@@ -25,6 +25,8 @@ export const Card = (cardProps: CardProps) => {
   const isInverse = inverse;
   const cardColor = isInverse ? 'bg-inverse-surface-raised border-inverse-subtle/40' : 'bg-default-surface-raised border-border-subtle/40';
   const textColor = isInverse ? 'text-inverse-primary' : 'text-button-neutral';
+  const hasPrimary = Boolean(buttonText?.trim());
+  const hasSecondary = Boolean(buttonTextSecondary?.trim());
   return (
     <Tag className={`${cardColor} border grid grid-rows-2 grid-cols-1 max-w-80`}>
       <Container className="relative">
@@ -42,8 +44,12 @@ export const Card = (cardProps: CardProps) => {
           <Text variant="heading-h6" as="p" className={textColor}>From ${price}</Text>
         </Container>
         <Container className="flex justify-center items-start gap-2.5">
-          <Button variant="outline" color="primary" inverse={isInverse} size="lg">{buttonTextSecondary}</Button>
-          <Button variant="solid" color="primary" inverse={isInverse} size="lg">{buttonText}</Button>
+          {hasSecondary && (
+            <Button variant="outline" color="primary" inverse={isInverse} size="lg">{buttonTextSecondary}</Button>
+          )}
+          {hasPrimary && (
+            <Button variant="solid" color="primary" inverse={isInverse} size="lg">{buttonText}</Button>
+          )}
         </Container>
       </Container>
     </Tag>
